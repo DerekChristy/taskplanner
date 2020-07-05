@@ -1,0 +1,19 @@
+<div>
+  <h1>Confirm delete?</h1>
+  <h2>{{ task.title }}</h2>
+  <mat-card-subtitle
+    >{{ task.dueDate | daysLeft
+    }}<span style="font-size: 0.8rem;" class="mx-2 badge badge-light">{{
+      task.type | titlecase
+    }}</span></mat-card-subtitle
+  >
+  <mat-card-content>
+    {{ task.description }}
+  </mat-card-content>
+  <mat-dialog-actions class="mb-1">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="warn" [mat-dialog-close]="true">
+      Delete
+    </button>
+  </mat-dialog-actions>
+</div>

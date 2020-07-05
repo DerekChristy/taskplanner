@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>New Task</h2>
+<mat-dialog-content>
+  <mat-form-field class="w-100">
+    <mat-label>Title</mat-label>
+    <input name="title" matInput [(ngModel)]="task.title" />
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Description</mat-label>
+    <textarea matInput rows="3" [(ngModel)]="task.description"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Due Date</mat-label>
+    <input type="date" [min]="minDate" [(ngModel)]="task.dueDate" matInput />
+  </mat-form-field>
+  <br />
+  <span class="font-weight-bold">Type</span>
+  <br />
+  <mat-button-toggle-group
+    class="m-2"
+    #taskType="matButtonToggleGroup"
+    [value]="task.type"
+    (change)="onTaskTypeChange(taskType.value)"
+  >
+    <mat-button-toggle value="task">Task</mat-button-toggle>
+    <mat-button-toggle value="bug">Bug</mat-button-toggle>
+    <mat-button-toggle value="suggestion">Suggestion</mat-button-toggle>
+    <mat-button-toggle value="improvement">Improvement</mat-button-toggle>
+  </mat-button-toggle-group>
+  <br />
+  <br />
+  <span class="font-weight-bold my-3">Priority</span>
+  <br />
+  <mat-button-toggle-group
+    class="m-2"
+    #taskPriority="matButtonToggleGroup"
+    [value]="task.priority"
+    (change)="onTaskPriorityChange(taskPriority.value)"
+  >
+    <mat-button-toggle class="p1" value="show-stopper"
+      >Show Stopper</mat-button-toggle
+    >
+    <mat-button-toggle class="p2" value="critical">Critical</mat-button-toggle>
+    <mat-button-toggle class="p3" value="major">Major</mat-button-toggle>
+    <mat-button-toggle class="p4" value="minor">Minor</mat-button-toggle>
+    <mat-button-toggle class="p5" value="patch">Patch</mat-button-toggle>
+  </mat-button-toggle-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    [disabled]="
+      task.description.length < 1 ||
+      task.title.length < 1 ||
+      task.dueDate.length < 1
+    "
+    mat-raised-button
+    [mat-dialog-close]="task"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

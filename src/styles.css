@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+.mat-grid-tile .mat-figure {
+  display: block !important;
+  border: 1px solid #aaa;
+}
+.p1 {
+  background-color: #ff8c8c;
+}
+.p2 {
+  background-color: #ffc98c;
+}
+.p3 {
+  background-color: #d3ff8c;
+}
+.p4 {
+  background-color: #a7ff8c;
+}
+.p5 {
+  background-color: #8cbeff;
+}

@@ -1,0 +1,223 @@
+<div class="bg-light">
+  <mat-grid-list
+    cdkDropListGroup
+    style="height: 90vh;"
+    cols="3"
+    rows="1"
+    rowHeight="fit"
+  >
+    <mat-grid-tile>
+      <mat-card class="w-100 text-center">
+        <span>
+          <mat-icon class="text-secondary">check_circle_outline</mat-icon>
+          Open
+        </span>
+      </mat-card>
+      <div>
+        <!-- Open Task List -->
+        <div
+          id="openList"
+          cdkDropList
+          [cdkDropListData]="openTasks"
+          (cdkDropListDropped)="drop($event)"
+          class="p-3 mt-2"
+          style="
+            display: flex;
+            flex-direction: column;
+            overflow-y: scroll;
+            height: 720px;
+          "
+        >
+          <mat-card
+            class="my-1"
+            cdkDrag
+            *ngFor="let task of openTasks"
+            [ngClass]="{
+              p1: task.priority === 'show-stopper',
+              p2: task.priority === 'critical',
+              p3: task.priority === 'major',
+              p4: task.priority === 'minor',
+              p5: task.priority === 'patch'
+            }"
+          >
+            <mat-card
+              style="opacity: 0; min-height: 110px;"
+              *cdkDragPlaceholder
+            >
+            </mat-card>
+
+            <div
+              cdkDragHandle
+              style="
+                position: absolute;
+                right: 10px;
+                color: #aaa;
+                cursor: pointer;
+                margin-right: 8px;
+              "
+            >
+              <mat-icon>open_with</mat-icon>
+            </div>
+            <mat-card-title>{{ task.title }}</mat-card-title>
+            <mat-card-subtitle
+              >{{ task.dueDate | daysLeft
+              }}<span
+                style="font-size: 0.8rem;"
+                class="mx-2 badge badge-light"
+                >{{ task.type | titlecase }}</span
+              ></mat-card-subtitle
+            >
+            <mat-card-content>
+              {{ task.description }}
+            </mat-card-content>
+            <mat-card-actions align="end">
+              <button mat-button (click)="updateTask(task)">Edit</button>
+              <button mat-button (click)="deleteTask(task)">
+                Delete
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <button
+          mat-raised-button
+          style="
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+          "
+          color="primary"
+          (click)="newTask()"
+        >
+          <mat-icon>add</mat-icon>Add Task
+        </button>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-card class="w-100 text-center">
+        <span>
+          <mat-icon class="text-warning">check_circle_outline</mat-icon>
+          In Progress
+        </span>
+      </mat-card>
+      <div
+        id="inprogList"
+        cdkDropList
+        [cdkDropListData]="progTasks"
+        (cdkDropListDropped)="drop($event)"
+        class="p-3 mt-2"
+        style="
+          display: flex;
+          flex-direction: column;
+          overflow-y: scroll;
+          height: 720px;
+        "
+      >
+        <mat-card
+          class="my-1"
+          *ngFor="let task of progTasks"
+          cdkDrag
+          [ngClass]="{
+            p1: task.priority === 'show-stopper',
+            p2: task.priority === 'critical',
+            p3: task.priority === 'major',
+            p4: task.priority === 'minor',
+            p5: task.priority === 'patch'
+          }"
+        >
+          <mat-card style="opacity: 0; min-height: 110px;" *cdkDragPlaceholder>
+          </mat-card>
+          <div
+            cdkDragHandle
+            style="
+              position: absolute;
+              right: 10px;
+              color: #aaa;
+              cursor: pointer;
+              margin-right: 8px;
+            "
+          >
+            <mat-icon>open_with</mat-icon>
+          </div>
+          <mat-card-title>{{ task.title }}</mat-card-title>
+          <mat-card-subtitle
+            >{{ task.dueDate | daysLeft
+            }}<span style="font-size: 0.8rem;" class="mx-2 badge badge-light">{{
+              task.type | titlecase
+            }}</span></mat-card-subtitle
+          >
+          <mat-card-content>
+            {{ task.description }}
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-button (click)="deleteTask(task)">
+              Delete
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-card class="w-100 text-center">
+        <span>
+          <mat-icon class="text-success">check_circle_outline</mat-icon>
+          Completed
+        </span>
+      </mat-card>
+      <div
+        id="completedList"
+        cdkDropList
+        [cdkDropListData]="completedTasks"
+        (cdkDropListDropped)="drop($event)"
+        class="p-3 mt-2"
+        style="
+          display: flex;
+          flex-direction: column;
+          overflow-y: scroll;
+          height: 720px;
+        "
+      >
+        <mat-card
+          class="my-1"
+          cdkDrag
+          *ngFor="let task of completedTasks"
+          [ngClass]="{
+            p1: task.priority === 'show-stopper',
+            p2: task.priority === 'critical',
+            p3: task.priority === 'major',
+            p4: task.priority === 'minor',
+            p5: task.priority === 'patch'
+          }"
+        >
+          <mat-card style="opacity: 0; min-height: 110px;" *cdkDragPlaceholder>
+          </mat-card>
+
+          <div
+            cdkDragHandle
+            style="
+              position: absolute;
+              right: 10px;
+              color: #aaa;
+              cursor: pointer;
+              margin-right: 8px;
+            "
+          >
+            <mat-icon>open_with</mat-icon>
+          </div>
+
+          <mat-card-title>{{ task.title }}</mat-card-title>
+          <mat-card-subtitle
+            >{{ task.dueDate | daysLeft
+            }}<span style="font-size: 0.8rem;" class="mx-2 badge badge-light">{{
+              task.type | titlecase
+            }}</span></mat-card-subtitle
+          >
+          <mat-card-content>
+            {{ task.description }}
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
