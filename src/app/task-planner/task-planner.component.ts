@@ -62,9 +62,9 @@ export class TaskPlannerComponent implements OnInit {
         if (task.status === 'open') {
           this.openTasks.splice(this.openTasks.indexOf(task), 1);
         } else if (task.status === 'prog') {
-          this.progTasks.splice(this.openTasks.indexOf(task), 1);
+          this.progTasks.splice(this.progTasks.indexOf(task), 1);
         } else {
-          this.completedTasks.splice(this.openTasks.indexOf(task), 1);
+          this.completedTasks.splice(this.completedTasks.indexOf(task), 1);
         }
 
         this.taskService.deleteTask(task._id).subscribe((data) => {
