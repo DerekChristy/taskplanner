@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { TaskService } from '../task.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-reports',
@@ -16,6 +17,7 @@ export class ReportsComponent implements OnInit {
   progTasks = 0;
   completedTasks = 0;
   priorities = [0, 0, 0, 0, 0];
+  dueDates = [];
   constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
@@ -25,9 +27,11 @@ export class ReportsComponent implements OnInit {
           if (task.status === 'open') {
             this.tasksLeft++;
             this.openTasks++;
+            this.dueDates.push(moment(task.dueDate).format('YYYY-MM-DD'));
           } else if (task.status === 'prog') {
             this.tasksLeft++;
             this.progTasks++;
+            this.dueDates.push(moment(task.dueDate).format('YYYY-MM-DD'));
           } else if (task.status === 'completed') {
             this.completedTasks++;
           }
@@ -51,7 +55,22 @@ export class ReportsComponent implements OnInit {
               break;
           }
         });
-        console.log(this.priorities);
+        let uniqueDates = [...new Set(this.dueDates)];
+        console.log(uniqueDates);
+        let lineData = [];
+        uniqueDates.forEach((date) => {
+          let count = 0;
+          this.dueDates.forEach((d) => {
+            if (date === d) {
+              count++;
+            }
+          });
+          let lineDateCount = {
+            t: date,
+            y: count,
+          };
+          lineData.push(lineDateCount);
+        });
 
         this.PieChart = new Chart('pieChart', {
           type: 'doughnut',
@@ -109,14 +128,26 @@ export class ReportsComponent implements OnInit {
           data: {
             datasets: [
               {
-                label: 'count plan',
-                data: [2, 1, 5, 2],
+                label: 'ghg',
+                fill: false,
+                lineTension: 0,
+                data: lineData,
               },
             ],
           },
           options: {
             scales: {
-              xAxes: [{ type: 'time' }],
+              xAxes: [
+                {
+                  type: 'time',
+                  distribution: 'linear',
+                  time: {
+                    displayFormats: {
+                      day: 'MMM DD',
+                    },
+                  },
+                },
+              ],
             },
           },
         });
